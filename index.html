@@ -226,14 +226,33 @@
         setInterval(resizeIframe, 1000);
 
 
-        // Listen for messages from the parent
+// Request page content and settings
+        function requestPageContentAndSettings() {
+            window.parent.postMessage({ subject: 'lti.getPageContent' }, '*');
+            window.parent.postMessage({ subject: 'lti.getPageSettings' }, '*');
+        }
+
+        // Handle responses
         window.addEventListener('message', function(event) {
-            if (event.data.subject === 'pageInfo') {
-                var info = 'Parent Page Title: ' + event.data.title + '<br>' +
-                           'Parent Page URL: ' + event.data.url;
-                document.getElementById('page-info').innerHTML = info;
+            if (event.origin !== 'https://your-canvas-instance.url') return; // Check the origin
+
+            var pageInfo = document.getElementById('page-info');
+
+            if (event.data.subject === 'lti.getPageContent.response') {
+                pageInfo.innerHTML += '<strong>Page Content:</strong> ' + event.data.content + '<br>';
+            }
+
+            if (event.data.subject === 'lti.getPageSettings') {
+                pageInfo.innerHTML += '<strong>Page Settings:</strong><br>';
+                pageInfo.innerHTML += 'Locale: ' + event.data.pageSettings.locale + '<br>';
+                pageInfo.innerHTML += 'Time Zone: ' + event.data.pageSettings.time_zone + '<br>';
+                pageInfo.innerHTML += 'High Contrast: ' + event.data.pageSettings.use_high_contrast + '<br>';
+                pageInfo.innerHTML += 'Window Width: ' + event.data.pageSettings.window_width + 'px<br>';
             }
         });
+
+        // Request on page load
+        window.addEventListener('load', requestPageContentAndSettings);
     </script>
 </body>
 </html>
