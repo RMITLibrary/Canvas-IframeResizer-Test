@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Iframe</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <iframe 
+            src="https://learninglab.rmit.edu.au/university-essentials/acting-academic-integrity/?iframe=true" 
+            width="100%" 
+            height="800" 
+            loading="lazy" 
+            id="content-frame">
+        </iframe>
+    </p>
+    <script>
+
+        window.addEventListener('load', function() {
+            // Calculate the desired height of the iframe content
+var newHeight = document.body.scrollHeight; // Adjust this logic if necessary
+
+// Send a message to the parent window to resize the iframe
+window.parent.postMessage({
+  subject: 'lti.frameResize',
+  height: newHeight
+}, '*');
+        });
+    </script>
+</body>
+</html>
