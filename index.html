@@ -17,7 +17,13 @@
         <header class="text-center mb-4">
             <h1>Welcome to Dummy Page</h1>
             <p class="lead">This is a sample page using Bootstrap components.</p>
+
+                     <h2>Iframe Content</h1>
+    <p id="page-info"></p>
+            
         </header>
+
+
 
               <!-- Carousel -->
         <div id="carouselExampleIndicators" class="carousel slide mb-4" data-ride="carousel">
@@ -218,6 +224,16 @@
         window.addEventListener('load', resizeIframe);
         window.addEventListener('resize', resizeIframe);
         setInterval(resizeIframe, 1000);
+
+
+        // Listen for messages from the parent
+        window.addEventListener('message', function(event) {
+            if (event.data.subject === 'pageInfo') {
+                var info = 'Parent Page Title: ' + event.data.title + '<br>' +
+                           'Parent Page URL: ' + event.data.url;
+                document.getElementById('page-info').innerHTML = info;
+            }
+        });
     </script>
 </body>
 </html>
