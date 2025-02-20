@@ -224,35 +224,6 @@
         window.addEventListener('load', resizeIframe);
         window.addEventListener('resize', resizeIframe);
         setInterval(resizeIframe, 1000);
-
-
-// Request page content and settings
-        function requestPageContentAndSettings() {
-            window.parent.postMessage({ subject: 'lti.getPageContent' }, '*');
-            window.parent.postMessage({ subject: 'lti.getPageSettings' }, '*');
-        }
-
-        // Handle responses
-        window.addEventListener('message', function(event) {
-            if (event.origin !== 'https://rmit.instructure.com') return; // Check the origin
-
-            var pageInfo = document.getElementById('page-info');
-
-            if (event.data.subject === 'lti.getPageContent.response') {
-                pageInfo.innerHTML += '<strong>Page Content:</strong> ' + event.data.content + '<br>';
-            }
-
-            if (event.data.subject === 'lti.getPageSettings') {
-                pageInfo.innerHTML += '<strong>Page Settings:</strong><br>';
-                pageInfo.innerHTML += 'Locale: ' + event.data.pageSettings.locale + '<br>';
-                pageInfo.innerHTML += 'Time Zone: ' + event.data.pageSettings.time_zone + '<br>';
-                pageInfo.innerHTML += 'High Contrast: ' + event.data.pageSettings.use_high_contrast + '<br>';
-                pageInfo.innerHTML += 'Window Width: ' + event.data.pageSettings.window_width + 'px<br>';
-            }
-        });
-
-        // Request on page load
-        window.addEventListener('load', requestPageContentAndSettings);
     </script>
 </body>
 </html>
